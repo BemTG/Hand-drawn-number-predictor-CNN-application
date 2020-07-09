@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+    <html>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-bar-block w3-animate-left" style="display:none;z-index:5" id="mySidebar">
+  <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
+  <a href="#" class="w3-bar-item w3-button"><!-- Link 1 --></a>
+  <a href="#" class="w3-bar-item w3-button"><!-- Link 2 --></a>
+  <a href="#" class="w3-bar-item w3-button"><!-- Link 3 --></a>
+</div>
+
+<!-- Page Content -->
+<div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+
+<div>
+  <button class="w3-button w3-white w3-xxlarge" onclick="w3_open()">&#9776;</button>
+  <div class="w3-container">
+    <h1></h1>
+    <p></p>
+    <p></p>
+  </div>
+</div>
+     
+<script>
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
+}
+</script>
+
+
+</body>
+<header class="w3-container w3-teal " >
+  <h1 style="color: white"><b>Applied Machine Learning</b></h1>
+  <h1>Hand-drawn number predictor</h1>
+</header>
+
+
+
+
+          
+</body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>
+
+<div class="w3-container w3-center">
+
+
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF=8">
+        <title>Guess My Number</title>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript">
+        var canvas, ctx, flag = false,
+            prevX = 0,
+            currX = 0,
+            prevY = 0,
+            currY = 0,
+            dot_flag = false;
+
+        var x = "black",
+            y = 20;
+
+        function init() {
+            canvas = document.getElementById('canvas_area');
+            ctx = canvas.getContext("2d");
+            w = canvas.width;
+            h = canvas.height;
+
+            canvas.addEventListener("mousemove", function (e) {
+                findxy('move', e)
+            }, false);
+            canvas.addEventListener("mousedown", function (e) {
+                findxy('down', e)
+            }, false);
+            canvas.addEventListener("mouseup", function (e) {
+                findxy('up', e)
+            }, false);
+            canvas.addEventListener("mouseout", function (e) {
+                findxy('out', e)
+            }, false);
+
+
+            // Set up touch events for mobile, etc
+            // http://bencentra.com/code/2014/12/05/html5-canvas-touch-events.html
+            canvas.addEventListener("touchstart", function (e) {
+                    mousePos = getTouchPos(canvas, e);
+              var touch = e.touches[0];
+              var mouseEvent = new MouseEvent("mousedown", {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+              });
+              canvas.dispatchEvent(mouseEvent);
+            }, false);
+            canvas.addEventListener("touchend", function (e) {
+              var mouseEvent = new MouseEvent("mouseup", {});
+              canvas.dispatchEvent(mouseEvent);
+            }, false);
+            canvas.addEventListener("touchmove", function (e) {
+              var touch = e.touches[0];
+              var mouseEvent = new MouseEvent("mousemove", {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+              });
+              canvas.dispatchEvent(mouseEvent);
+            }, false);
+
+           
+
+        }
+
+        // Get the position of a touch relative to the canvas
+        function getTouchPos(canvasDom, touchEvent) {
+          var rect = canvasDom.getBoundingClientRect();
+          return {
+            x: touchEvent.touches[0].clientX - rect.left,
+            y: touchEvent.touches[0].clientY - rect.top
+          };
+        }
+
+
+
+        function draw() {
+
+
+            //e.preventDefault();
+            //e.stopPropagation();
+
+
+            ctx.beginPath();
+            ctx.moveTo(prevX, prevY);
+            ctx.lineTo(currX, currY);
+            ctx.strokeStyle = x;
+            ctx.lineWidth = y;
+            ctx.shadowBlur = 2;
+            ctx.lineJoin = ctx.lineCap = 'round';
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        function erase() {
+            ctx.clearRect(0, 0, w, h);
+            predicted_digit.innerHTML = '?';
+        }
+
+        function findxy(res, e) {
+            if (res == 'down') {
+                prevX = currX;
+                prevY = currY;
+                currX = e.clientX - canvas.offsetLeft;
+                currY = e.clientY - canvas.offsetTop;
+
+                flag = true;
+                dot_flag = true;
+                if (dot_flag) {
+                    ctx.beginPath();
+                    ctx.fillStyle = x;
+                    ctx.fillRect(currX, currY, 2, 2);
+                    ctx.closePath();
+                    dot_flag = false;
+                }
+            }
+            if (res == 'up' || res == "out") {
+                flag = false;
+            }
+            if (res == 'move') {
+                if (flag) {
+                    prevX = currX;
+                    prevY = currY;
+                    currX = e.clientX - canvas.offsetLeft;
+                    currY = e.clientY - canvas.offsetTop;
+                    draw();
+                }
+            }
+        }
+
+        function SetBrushSize() {
+            y = document.getElementById("brush_select").value;
+
+        }
+
+        </script>
+
+
+
+             <td><h3><p style="text-align:center"><font color="white">Drag Slider to see forecasts</font></p></h3></td>
+            </tr>
+        </table>
+
+
+  <body style="background-color:white;">
+        <table border=0 cellpadding="1" style="width: 340px; background-color:purple;margin-left:auto;margin-right:auto">
+            <tr>
+              <td><h3><p style="text-align:center"><font color="white">Write a number between 0-9 in the middle of the canvas and click predict</font></p></h3></td>
+            </tr>
+        </table>
+
+        <div class="w3-container w3-center"><body onload="init()">
+
+        
+          
+
+
+        <td><canvas id="canvas_area" width="320" height="320" 
+                        style="position:left;top:0%;left:0%;border:10px solid; background-color: white"></canvas></td>
+                          <tr>
+
+
+
+              <td><h3><p style="text-align:center"><font color="white"></font></p></h3></td>
+            </tr>
+        </table>
+
+
+<td></td>
+                    <td>
+                        <!-- predict button -->
+                        <input type="button" value="Predict" id="btn" size="30" onclick="fetchdata()">
+                        <!-- when user clicks the predict button we run the fetchdata function  -->
+
+
+                        <!-- erase button -->
+                        <input type="button" value="clear" id="clr" size="23" onclick="erase()">
+                        
+                        <!-- brush control -->
+                        <label>Brush Size:</label> 
+                        <select id="brush_select" onchange="SetBrushSize()" color='green'>
+                              <option value="20">20</option>
+                              <option value="30" selected>30</option> 
+                              <option value="50">50</option>
+                              <option value="80">80</option>
+                            </select> 
+                        </td>
+                    <td></td>
+                </tr>
+            </table></div>
+<img src="static/images/wiz2.png" alt="top" width="600" height="400">
+        <table border=0 cellpadding="1" style="width: 80%; background-color:white;margin-left:auto;margin-right:auto">
+
+            <!-- PREDICTED RESULT WINDOW -->
+            <table>
+                <tr>
+            <label id='predicted_digit' name='predicted_digit' style="font-size:42px; position:absolute; top:94%; left:48%; width:40px;height:55px;border:2px solid;background-color: gold"> {{prediction}}
+            </label></tr> </table>
+
+
+            
+          
+
+
+        </body>
+
+
+        <script>
+
+
+        function update_dashboard(prediction){
+            predicted_digit.innerHTML = prediction;
+        }
+
+        function fetchdata()
+        {
+            $.ajax({
+                type : "POST",
+                url:'{{ url_for('background_process') }}',
+                data:{'drawing_data': canvas_area.toDataURL()},
+                success: function(data){
+                    update_dashboard(data.prediction);
+                }
+            });
+        }
+
+        </script></div>
+
+
+        <html>
+
+
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+.left, .right {
+  width: 25%;
+}
+
+.middle {
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+</head>
+<body>
+
+<h2></h2>
+
+<div class="row">
+  <div class="column left" style="background-color:white">
+    <h2></h2>
+    <p></p>
+  </div>
+  <div class="column middle" style="background-color:white;">
+    <h2>Where does ML fit in?</h2>
+    <p style="color: darkslategray; font-size: 16px">
+
+        When it comes to automating simple tasks, Machine Learning is at the core of it all. By using machine learning algorithms we can easily scale up the data/workload that we were previously able to handle whilst doing it at record breaking speed.<br><br>
+
+    A simple example where ML can be incorporated is in uploading hand-written forms, notes or old records online or to a local machine. This can save organizations a lot of time and resources which can be directed to other aspects of the businesses.</p>
+
+    <h2>How does this web application work?</h2>
+    <p style="color: darkslategray; font-size: 16px">
+        The web application aims to predict hand-drawn numbers in the canvas.<br>
+
+        This is achieved through supervised learning, where the model is fed many examples of hand-drawn images which are labelled. The aim is for the model to learn the feature characteristics of each number in order predict right a new hand drawn image it hasn’t seen before. <br><br>
+
+        The webapp model has been trained using over 60,000 images of hand-drawn numbers which is available from MNIST(Modified National Institute of Standards and Technology database). The machine learning algorithm used in the web application is Convolutional Neural Network (CNN) which comprises of a set algorithms working together to come to a single conclusion. CNNs are ideal for image data processing mainly due to the convolution and max pooling layer which allow for more detailed computer vision analysis.<br><br>
+
+        For further info check out the code on <a href="https://github.com/BemTG/Number-Predictor-CNN-/blob/master/Drawing%20and%20Predicting%20numbers%20(beta).ipynb">github</a>.
+
+  </div>
+  <div class="column right" style="background-color:white;">
+    <h2></h2>
+    <p></p>
+  </div>
+</div>
+
+</body>
+</html>
+</html>
