@@ -338,19 +338,20 @@ function w3_close() {
     <h2>Where does ML fit in?</h2>
     <p style="color: darkslategray; font-size: 16px">
 
-        When it comes to automating simple tasks, Machine Learning is at the core of it all. By using machine learning algorithms we can easily scale up the data/workload that we were previously able to handle whilst doing it at record breaking speed.<br><br>
+        When it comes to automating simple tasks, Machine Learning (ML) is at the core of it all. By using ML algorithms we can easily scale up the data/workload that we were previously able to handle whilst being time-efficient.<br><br>
 
-    A simple example where ML can be incorporated is in uploading hand-written forms, notes or old records online or to a local machine. This can save organizations a lot of time and resources which can be directed to other aspects of the businesses.</p>
+    A simple example where ML can be incorporated is in changing hand-written forms, notes or old records to digital formats. This can save organizations a lot of time and resources which can be directed to other aspects of the businesses.</p>
 
     <h2>How does this web application work?</h2>
     <p style="color: darkslategray; font-size: 16px">
-        The web application aims to predict hand-drawn numbers in the canvas.<br>
+        The web application aims to classify hand-drawn numbers by the user. This is achieved by convolutional neural network (CNN) model which is trained by supervised learning.  <br>
 
-        This is achieved through supervised learning, where the model is fed many examples of hand-drawn images which are labelled. The aim is for the model to learn the feature characteristics of each number in order predict right a new hand drawn image it hasn’t seen before. <br><br>
+        The model has been trained using over 60,000 images of hand-drawn numbers which are labelled accordingly from MNIST(Modified National Institute of Standards and Technology database). <br><br>
 
-        The webapp model has been trained using over 60,000 images of hand-drawn numbers which is available from MNIST(Modified National Institute of Standards and Technology database). The machine learning algorithm used in the web application is Convolutional Neural Network (CNN) which comprises of a set algorithms working together to come to a single conclusion. CNNs are ideal for image data processing mainly due to the convolution and max pooling layer which allow for more detailed computer vision analysis.<br><br>
+        Back-propagation is the essence of neural net training. It is the practice of fine-tuning the weights of a neural net based on the error rate to learn the feature characteristics of the images that are being passed on. 
+CNN's are ideal for image data processing mainly due to the convolution and max-pooling layer which allow for more detailed computer vision analysis.<br><br>
 
-        For further info check out the code on <a href="https://github.com/BemTG/Number-Predictor-CNN-/blob/master/Drawing%20and%20Predicting%20numbers%20(beta).ipynb">github</a>.
+        For further information,  visit <a href="https://github.com/BemTG/Number-Predictor-CNN-/blob/master/Drawing%20and%20Predicting%20numbers%20(beta).ipynb">github</a> where the notebook is available for the project.
 
   </div>
   <div class="column right" style="background-color:white;">
